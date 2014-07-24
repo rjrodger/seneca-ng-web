@@ -1,0 +1,36 @@
+{
+  "name": "seneca-ng-web",
+  "version": "0.1.0",
+  "description": "Seneca Angular web plugin",
+  "main": "ng-web.js",
+  "scripts": {
+    "test": "node_modules/.bin/mocha test/*.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/rjrodger/seneca-ng-web.git"
+  },
+  "keywords": [
+    "seneca",
+    "card",
+    "plugin"
+  ],
+  "author": "Richard Rodger (http://richardrodger.com)",
+  "license": "MIT",
+  "dependencies": {
+    "nid": "^0.3.2",
+    "seneca": "^0.5.19",
+    "underscore": "^1.6.0"
+  },
+  "peerDependencies": {
+    "seneca": "*"
+  },
+  "devDependencies": {
+    "mocha": "^1.20.1"
+  },
+  "files": [
+    "README.md",
+    "LICENSE.txt",
+    "ng-web.js"
+  ]
+}

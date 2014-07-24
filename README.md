@@ -1,4 +1,6 @@
-seneca-ng-web
-=============
+seneca-card
+==============
 
-Seneca Angular web plugin.
+Seneca card plugin.
+
+
