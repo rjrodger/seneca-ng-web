@@ -1,6 +1,6 @@
 {
   "name": "seneca-ng-web",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Seneca Angular web plugin",
   "main": "ng-web.js",
   "scripts": {
@@ -31,6 +31,7 @@
   "files": [
     "README.md",
     "LICENSE.txt",
-    "ng-web.js"
+    "ng-web.js",
+    "senecaWeb.js"
   ]
 }
