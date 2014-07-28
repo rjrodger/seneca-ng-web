@@ -17,7 +17,7 @@ si.use( '../ng-web' )
 describe('ng-web', function() {
   
   it('happy', function(fin) {
-    // TODO!
+    assert.ok(si.hasplugin('ng-web'))
     fin()
   })
 
