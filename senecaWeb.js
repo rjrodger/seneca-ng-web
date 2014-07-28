@@ -82,23 +82,16 @@
       return {
         pub: function(topic, args) { 
 	  cache[topic] && cache[topic].forEach(function(sub) {
-            //console.log( topic+'('+JSON.stringify(args)+') -> '+this.name)
-	    sub.apply(null, args || []);
+	    sub.apply(null, args || [])
 	  })
         },
         
         sub: function(topic, callback) {
 	  if(!cache[topic]) {
-	    cache[topic] = [];
+	    cache[topic] = []
 	  }
-	  cache[topic].push(callback);
-	  return [topic, callback]; 
-        },
-        
-        unsub: function(topic) {
-	  cache[topic] && $.each(cache[topic], function(i){
-	    cache[t].splice(i, 1);
-	  })
+	  cache[topic].push(callback)
+	  return [topic, callback]
         }
       }
     }

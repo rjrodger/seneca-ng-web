@@ -113,6 +113,7 @@ The generic `win` and `fail` functions can be overridden for each API call.
 * [`call`](#wa-call) - perform any HTTP request
 
 
+
 ---------------------------------------
 
 <a name="wa-get" />
@@ -170,6 +171,7 @@ angular
   .controller('fooBar',function( $scope, fooAPI ) {
 
     // POST /foo/bar
+    // { "color": "red" }
     fooAPI.post('bar',{color:'red'},function(data,details){
       console.log(data,details)
     })
@@ -182,7 +184,7 @@ __Arguments__
 * `data` - Request data as a JavaScript object, wil be JSONified; _optional_
 * `win` - Success callback; signature: `win( data, details )`; _optional_.
   * `data` -  result object provided by [Angular $http](https://docs.angularjs.org/api/ng/service/$http).
-  * `details` - details object describing the orginal request, as per <a href="#wa=get">GET</a>.
+  * `details` - details object describing the orginal request, as per <a href="#wa-get">GET</a>.
 * `fail` - Failure callback; signature: `fail( data, details )`; _optional_; callback arguments as per `win`.
 
 ---------------------------------------
@@ -218,7 +220,7 @@ __Arguments__
 * `callopts` - Angular http$ settings; _optional_
 * `win` - Success callback; signature: `win( data, details )`; _optional_.
   * `data` -  result object provided by [Angular $http](https://docs.angularjs.org/api/ng/service/$http).
-  * `details` - details object describing the orginal request, as per <a href="#wa=get">GET</a>.
+  * `details` - details object describing the orginal request, as per <a href="#wa-get">GET</a>.
 * `fail` - Failure callback; signature: `fail( data, details )`; _optional_; callback arguments as per `win`.
 
 
@@ -227,5 +229,97 @@ __Arguments__
 
 ## PubSub API
 
-This provides a simple publish/subscribe service for custom events within your Angular app. This avoids perfomance issues with `$rootScope`, and avoids Angular scoping issues in general. That means you can use it for arbitrary event-based communication between any Angular object types.
+This provides a simple publish/subscribe service for custom events
+within your Angular app. This avoids perfomance issues with
+`$rootScope`, and avoids Angular scoping issues in general. That means
+you can use it for arbitrary event-based communication between any
+Angular object types.
+
+### Construction
+
+Construct a new instance of an Angular service using
+`seneca.ng.pubsub()`. This returns an Angular service function of the
+form `function() { ... }`. You can create as many separate
+instances as you like. There are no options.
+
+
+### Methods
+
+* [`pub`](#ps-pub) - Publish a named event with optional arguments.
+* [`sub`](#ps-sub) - Subscribe to a named event.
+
+
+
+---------------------------------------
+
+<a name="ps-pub" />
+### _pubsub-service_.pub( topic, args? )
+
+Publish an event to a topic. The topic is an arbitrary string, and
+does not need to be defined in advance. You provide the event
+arguments as an array, and these are passed to any subscribers.
+
+__Example__
+
+```js
+angular
+  .module('fooModule')
+  .service('fooPubSub', seneca.ng.pubsub())
+  .controller('fooBar',function( $scope, fooPubSub ) {
+
+    fooPubSub.pub('hello',['World'])
+  })
+```
+
+__Arguments__
+
+* `topic` - Topic string identifying the event; _required_.
+* `args` - Arguments array; _optional_.
+
+
+---------------------------------------
+
+<a name="ps-sub" />
+### _pubsub-service_.sub( topic, callback )
+
+Subscribe to an event topic. Whenever the [pub](#ps-pub) method is
+called, your `callback` function will be invoked. The arguments
+supplied to the `pub` method as an array will be used as the actual
+arguments of the callback.
+
+__Example__
+
+```js
+angular
+  .module('fooModule')
+  .service('fooPubSub', seneca.ng.pubsub())
+  .controller('fooBar',function( $scope, fooPubSub ) {
+
+    fooPubSub.sub('hello',function(who) {
+      console.log('Hello '+who+'!')
+    })
+  })
+```
+
+__Arguments__
+
+* `topic` - Topic string identifying the event; _required_.
+* `callback` - Function invoked when event is fired; signature: `function( arguments... )`; _required_.
+
+
+
+## Ad hoc Console Testing
+
+You can gain access to the service objects directly using the
+following Angular incantation:
+
+```js
+var api = angular.element('body').injector().get('fooAPI')
+```
+
+You'll need to ensure that you call `angular.element` on an element
+that has the service object in scope.
+
+
+
 
