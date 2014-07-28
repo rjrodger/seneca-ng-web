@@ -85,8 +85,8 @@ angularModuleObject.service('serviceName', seneca.ng.web({
 The available options are:
 
 * `prefix` - URL path prefix; optional, default: ''
-* `fail` - generic failure function, called when request fails; optional; default: console.log
-* `win` - generic success function, called when request returns successfully; optional; default: console.log
+* `fail` - generic failure function, called when request fails; _optional_; _default:_ `console.log`
+* `win` - generic success function, called when request returns successfully; optional; _default:_ `console.log`
 
 The generic `win` and `fail` functions can be overridden for each API call.
 
@@ -111,11 +111,11 @@ __Arguments__
 
 * `suffix` - Suffix string to append to `options.prefix` to form full URL path; _optional_.
 * `win` - Success callback; signature: `win( data, details )`; _optional_.
-  ** `data` -  result object provided by [Angular $http](https://docs.angularjs.org/api/ng/service/$http).
-  ** `details` - details object describing the orginal request:
-    *** `method` - HTTP method
-    *** `prefix` - URL path prefix used
-    *** `suffix` - URL path suffix used
+  * `data` -  result object provided by [Angular $http](https://docs.angularjs.org/api/ng/service/$http).
+  * `details` - details object describing the orginal request:
+    * `method` - HTTP method
+    * `prefix` - URL path prefix used
+    * `suffix` - URL path suffix used
 
 
 
