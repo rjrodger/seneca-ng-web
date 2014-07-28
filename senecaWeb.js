@@ -1,6 +1,8 @@
 ;(function(window){
 
   function web( options ) {
+    options = options || {}
+
     return function($http) {
 
       var default_fail = options.fail || function( data ) {
@@ -14,25 +16,58 @@
       var prefix = options.prefix || ''
 
       return {
-        call: function(method,suffix,data,win,fail) {
-          win  = win  || default_win
-          fail = fail || default_fail
+        call: function(method,suffix,data,callopts,win,fail) {
+          method   = (null==method ? 'GET' : (''+method).toUpperCase())
+          suffix   = (null==suffix ? '' : (''+suffix))
+          callopts = (null==callopts ? {} : callopts)
+          win      = win  || default_win
+          fail     = fail || default_fail
 
-          $http({
-            method: method,
-            url:    prefix+suffix,
-            data:   data,
-            cache:  false
-          }).success(function(data){
-            win(data,{method:method,suffix:suffix,prefix:prefix})
+          httpopts = Object.create(callopts)
+          httpopts.method = null == httpopts.method ? method        : httpopts.method
+          httpopts.url    = null == httpopts.url    ? prefix+suffix : httpopts.url
+          httpopts.cache  = null == httpopts.cache  ? false         : httpopts.cache
+          httpopts.data   = null == httpopts.data   ? data          : httpopts.data
 
-          }).error(function(info){
-            fail(info,{method:method,suffix:suffix,prefix:prefix})
-          })
+          console.log(httpopts)
+
+          $http(httpopts)
+            .success(function(data,status,headers,config){
+              win(data,{
+                method:method,
+                suffix:suffix,
+                prefix:prefix,
+                status:status,
+                headers:headers,
+                config:config
+              })
+
+            }).error(function(data,status,headers,config){
+              fail(data,{
+                method:method,
+                suffix:suffix,
+                prefix:prefix,
+                status:status,
+                headers:headers,
+                config:config
+              })
+            })
         },
 
         get: function(suffix,win,fail) {
-          this.call('GET',suffix,null,win,fail)
+          this.call('GET',suffix,null,null,win,fail)
+        },
+
+        post: function(suffix,data,win,fail) {
+          this.call('POST',suffix,data,null,win,fail)
+        },
+
+        put: function(suffix,data,win,fail) {
+          this.call('PUT',suffix,data,null,win,fail)
+        },
+
+        delete: function(suffix,win,fail) {
+          this.call('DELETE',suffix,null,null,win,fail)
         }
       }
 
@@ -46,8 +81,8 @@
 
       return {
         pub: function(topic, args) { 
-	  cache[topic] && _.each(cache[topic], function(sub) {
-            console.log( topic+'('+JSON.stringify(args)+') -> '+this.name)
+	  cache[topic] && cache[topic].forEach(function(sub) {
+            //console.log( topic+'('+JSON.stringify(args)+') -> '+this.name)
 	    sub.apply(null, args || []);
 	  })
         },

@@ -1,0 +1,94 @@
+<html>
+<head>
+  <title>ng-web</title>
+  <style>
+    [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+      display: none !important;
+    }
+  </style>
+</head>
+<body ng-app="qaz" ng-cloak>
+  <h1>ng-web</h1>
+  <div ng-controller='qazCtrl'>
+    <p>GET API: {{ get_api_zed }} - {{ get_api_bar }} </p>
+    <p>POST API: {{ post_api_zed }} - {{ post_api_bar }} </p>
+    <p>CALL API: {{ call_api_zed }} - {{ call_api_bar }} - {{ call_api_details }} </p>
+    <p>BAD API: data={{ bad_api_data }}, details:{{ bad_api_details }} </p>
+    <p>GET ANY: {{ get_any_zed }} - {{ get_any_bar }} </p>
+    <p>POST ANY: {{ post_any_zed }} - {{ post_any_bar }} </p>
+  </div>
+  <script src="/seneca/init.js"></script>
+  <script src="/bower_components/angular/angular.js"></script>
+  <script>
+    angular
+      .module('qaz',[])
+      .service('qazAPI', seneca.ng.web({prefix:'/api/'}))
+      .service('qazAnyPath', seneca.ng.web())
+      .service('qazPubSub', seneca.ng.pubsub())
+      .controller('qazCtrl',function( $scope, qazAPI, qazAnyPath, qazPubSub ) {
+
+        qazPubSub.sub('get-api',function(data){
+          $scope.get_api_zed = data.zed
+          $scope.get_api_bar = data.bar
+        })
+
+        qazPubSub.sub('post-api',function(data){
+          $scope.post_api_zed = data.zed
+          $scope.post_api_bar = data.bar
+        })
+
+        qazPubSub.sub('call-api',function(data,details){
+          $scope.call_api_zed = data.zed
+          $scope.call_api_bar = data.bar
+          $scope.call_api_details = JSON.stringify(details)
+        })
+
+        qazPubSub.sub('bad-api',function(data,details){
+          $scope.bad_api_data   = JSON.stringify(data)
+          $scope.bad_api_details = JSON.stringify(details)
+        })
+
+
+        qazPubSub.sub('get-any',function(data){
+          $scope.get_any_zed = data.zed
+          $scope.get_any_bar = data.bar
+        })
+
+        qazPubSub.sub('post-any',function(data){
+          $scope.post_any_zed = data.zed
+          $scope.post_any_bar = data.bar
+        })
+
+
+        qazAPI.get('bar',function(data){
+          qazPubSub.pub('get-api',[data])
+        })
+
+        qazAPI.call('GET','bar',null,null,function(data,details){
+          qazPubSub.pub('call-api',[data,details])
+        })
+
+        qazAPI.call('GET','bad',null,null,
+          function(data,details){
+            alert('FAIL'+JSON.stringify(details))
+          }, 
+          function(data,details){
+            qazPubSub.pub('bad-api',[data,details])
+          })
+
+        qazAPI.post('bar',{bar:'A'},function(data){
+          qazPubSub.pub('post-api',[data])
+        })
+
+        qazAnyPath.get('/api/bar',function(data){
+          qazPubSub.pub('get-any',[data])
+        })
+
+        qazAnyPath.post('/api/bar',{bar:'B'},function(data){
+          qazPubSub.pub('post-any',[data])
+        })
+    })
+
+  </script>
+</body>
+</html>
