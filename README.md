@@ -44,7 +44,6 @@ Then in your HTML, load the Seneca client-side initialisation script:
 And in your client-side angular code, use it like so:
 
 ```js
-
 angular
   .module('fooModule')
   .service('fooAPI',      seneca.ng.web({prefix:'/api/1.0/'}))
@@ -99,7 +98,7 @@ The available options are:
 
 * `prefix` - URL path prefix; _optional_, _default_: `""`
 * `fail` - generic failure function, called when request fails; _optional_; _default:_ `console.log`
-* `win` - generic success function, called when request returns successfully; optional; _default:_ `console.log`
+* `win` - generic success function, called when request returns successfully; _optional_; _default:_ `console.log`
 
 The generic `win` and `fail` functions can be overridden for each API call.
 
@@ -124,6 +123,19 @@ request is generated each time. The `suffix` is concatenated to the
 `options.prefix` value as a string. Forward slashes are _not_
 automatically inserted.
 
+__Example__
+
+```js
+angular
+  .module('fooModule')
+  .service('fooAPI', seneca.ng.web({prefix:'/foo/'}))
+  .controller('fooBar',function( $scope, fooAPI ) {
+    fooAPI.get('bar',function(data,details){
+      console.log(data,details)
+    })
+  })
+```
+
 __Arguments__
 
 * `suffix` - Suffix string to append to `options.prefix` to form full URL path; _optional_.
@@ -146,6 +158,19 @@ Perform a POST request. Responses are not cached. The URL path is
 constructed in the same way as the <a href="#wa=get">GET
 request</a>. You supply the data for the POST request as a plain
 JavaScript object. This will be serialized to JSON by Angular.
+
+__Example__
+
+```js
+angular
+  .module('fooModule')
+  .service('fooAPI', seneca.ng.web({prefix:'/foo/'}))
+  .controller('fooBar',function( $scope, fooAPI ) {
+    fooAPI.post('bar',{color:'red'},function(data,details){
+      console.log(data,details)
+    })
+  })
+```
 
 __Arguments__
 
