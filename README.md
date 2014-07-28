@@ -130,6 +130,8 @@ angular
   .module('fooModule')
   .service('fooAPI', seneca.ng.web({prefix:'/foo/'}))
   .controller('fooBar',function( $scope, fooAPI ) {
+
+    // GET /foo/bar
     fooAPI.get('bar',function(data,details){
       console.log(data,details)
     })
@@ -155,7 +157,7 @@ __Arguments__
 ### _web-service_.post( suffix?, data?,  win?, fail? )
 
 Perform a POST request. Responses are not cached. The URL path is
-constructed in the same way as the <a href="#wa=get">GET
+constructed in the same way as the <a href="#wa-get">GET
 request</a>. You supply the data for the POST request as a plain
 JavaScript object. This will be serialized to JSON by Angular.
 
@@ -166,6 +168,8 @@ angular
   .module('fooModule')
   .service('fooAPI', seneca.ng.web({prefix:'/foo/'}))
   .controller('fooBar',function( $scope, fooAPI ) {
+
+    // POST /foo/bar
     fooAPI.post('bar',{color:'red'},function(data,details){
       console.log(data,details)
     })
