@@ -107,6 +107,16 @@ request is generated each time. The `suffix` is concatenated to the
 `options.prefix` value as a string. Forward slashes are _not_
 automatically inserted.
 
+__Arguments__
+
+* `suffix` - Suffix string to append to `options.prefix` to form full URL path; _optional_.
+* `win` - Success callback; signature: `win( data, details )`; _optional_.
+  ** `data` -  result object provided by [Angular $http](https://docs.angularjs.org/api/ng/service/$http).
+  ** `details` - details object describing the orginal request:
+    *** `method` - HTTP method
+    *** `prefix` - URL path prefix used
+    *** `suffix` - URL path suffix used
+
 
 
 
