@@ -62,6 +62,19 @@ angular
   })
 ```
 
+
+## Standalone Example
+
+Check out the [simple Express/Angular app](https://github.com/rjrodger/seneca-ng-web/tree/master/test/web) in the test folder. Run with:
+
+```sh
+$ cd test/web
+$ node test-app.js
+```
+
+The `test/web/index.html` contains some example client-side code.
+
+
 ## Web API
 
 This is a convenience API for web requests. Use this to make requests against URL end points you have defined with [seneca-web](http://github.com/rjrodger/seneca-web).
@@ -84,7 +97,7 @@ angularModuleObject.service('serviceName', seneca.ng.web({
 
 The available options are:
 
-* `prefix` - URL path prefix; optional, default: ''
+* `prefix` - URL path prefix; _optional_, _default_: `""`
 * `fail` - generic failure function, called when request fails; _optional_; _default:_ `console.log`
 * `win` - generic success function, called when request returns successfully; optional; _default:_ `console.log`
 
@@ -95,6 +108,10 @@ The generic `win` and `fail` functions can be overridden for each API call.
 ### Methods
 
 * [`get`](#wa-get) - perform a GET request
+* [`post`](#wa-post) - perform a POST request
+* [`put`](#wa-put) - perform a PUT request
+* [`delete`](#wa-delete) - perform a DELETE request
+* [`call`](#wa-call) - perform any HTTP request
 
 
 ---------------------------------------
@@ -116,6 +133,65 @@ __Arguments__
     * `method` - HTTP method
     * `prefix` - URL path prefix used
     * `suffix` - URL path suffix used
+    * `status` - HTTP status code
+    * `headers` - Response headers
+    * `config` - Angular request configuration
+
+---------------------------------------
+
+<a name="wa-post" />
+### _web-service_.post( suffix?, data?,  win?, fail? )
+
+Perform a POST request. Responses are not cached. The URL path is
+constructed in the same way as the <a href="#wa=get">GET
+request</a>. You supply the data for the POST request as a plain
+JavaScript object. This will be serialized to JSON by Angular.
+
+__Arguments__
+
+* `suffix` - Suffix string to append to `options.prefix` to form full URL path; _optional_.
+* `data` - Request data as a JavaScript object, wil be JSONified; _optional_
+* `win` - Success callback; signature: `win( data, details )`; _optional_.
+  * `data` -  result object provided by [Angular $http](https://docs.angularjs.org/api/ng/service/$http).
+  * `details` - details object describing the orginal request, as per <a href="#wa=get">GET</a>.
+* `fail` - Failure callback; signature: `fail( data, details )`; _optional_; callback arguments as per `win`.
+
+---------------------------------------
+
+<a name="wa-put" />
+### _web-service_.put( suffix?, data?, win?, fail? )
+
+Perform a PUT request. This method has the exact same API as <a href="#wa-post">POST</a>.
+
+
+---------------------------------------
+
+<a name="wa-delete" />
+### _web-service_.delete( suffix?,  win?, fail? )
+
+Perform a DELETE request. This method has the exact same API as <a href="#wa-post">GET</a>.
+
+
+---------------------------------------
+
+<a name="wa-call" />
+### _web-service_.call( method?, suffix?, data?, callopts?, win?, fail? )
+
+Perform any HTTP request. For those HTTP methods that do not require
+data, the `data` argument is ignored. The `callopts` argument can be used to set 
+[Angular http$ options](https://docs.angularjs.org/api/ng/service/$http). All arguments are optional - use a `null` as a placeholder.
+
+__Arguments__
+
+* `method` - HTTP request method; _optional_; _default_:`GET`.
+* `suffix` - Suffix string to append to `options.prefix` to form full URL path; _optional_.
+* `data` - Request data as a JavaScript object, wil be JSONified; _optional_
+* `callopts` - Angular http$ settings; _optional_
+* `win` - Success callback; signature: `win( data, details )`; _optional_.
+  * `data` -  result object provided by [Angular $http](https://docs.angularjs.org/api/ng/service/$http).
+  * `details` - details object describing the orginal request, as per <a href="#wa=get">GET</a>.
+* `fail` - Failure callback; signature: `fail( data, details )`; _optional_; callback arguments as per `win`.
+
 
 
 
