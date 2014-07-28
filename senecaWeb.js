@@ -23,7 +23,12 @@
             url:    prefix+suffix,
             data:   data,
             cache:  false
-          }).success(win).error(fail)
+          }).success(function(data){
+            win(data,{method:method,suffix:suffix,prefix:prefix})
+
+          }).error(function(info){
+            fail(info,{method:method,suffix:suffix,prefix:prefix})
+          })
         },
 
         get: function(suffix,win,fail) {

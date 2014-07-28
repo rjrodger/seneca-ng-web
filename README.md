@@ -66,6 +66,49 @@ angular
 
 This is a convenience API for web requests. Use this to make requests against URL end points you have defined with [seneca-web](http://github.com/rjrodger/seneca-web).
 
+### Construction
+
+Construct a new instance of an Angular service using
+`seneca.ng.web()`. This returns an Angular service function of the
+form `function( $http ) { ... }`. You can create as many separate
+instances as you like.
+
+You can pass in an options object to customize the service. In this
+example, all request URLs are prefixed with `/foo/bar/`.
+
+```js
+angularModuleObject.service('serviceName', seneca.ng.web({
+  prefix: '/foo/bar/'
+}))
+```
+
+The available options are:
+
+* `prefix` - URL path prefix; optional, default: ''
+* `fail` - generic failure function, called when request fails; optional; default: console.log
+* `win` - generic success function, called when request returns successfully; optional; default: console.log
+
+The generic `win` and `fail` functions can be overridden for each API call.
+
+
+
+### Methods
+
+* [`get`](#wa-get) - perform a GET request
+
+
+---------------------------------------
+
+<a name="wa-get" />
+### _web-service_.get( suffix?, win?, fail? )
+
+Perform a GET request. Responses are not cached, so a new network
+request is generated each time. The `suffix` is concatenated to the
+`options.prefix` value as a string. Forward slashes are _not_
+automatically inserted.
+
+
+
 
 ## PubSub API
 
