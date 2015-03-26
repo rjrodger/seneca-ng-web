@@ -23,10 +23,10 @@ module.exports = function( options ) {
   seneca.add({init:plugin},function(args,done){
     var seneca = this
 
-    fs.readFile( path.join(__dirname,'/senecaWeb.js'),function(err,content){
+    fs.readFile( path.join(__dirname,'/senecaWeb.js'),{encoding:'utf8'},function(err,content){
       if( err ) return done(err);
 
-      seneca.act({role:'web',cmd:'source',title:'ng-web',source:content})
+      seneca.act({role:'web',set:'source',title:'ng-web',source:content})
 
       done();
     })
