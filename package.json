@@ -1,6 +1,6 @@
 {
   "name": "seneca-ng-web",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Seneca Angular web plugin",
   "main": "ng-web.js",
   "scripts": {
@@ -19,7 +19,7 @@
   "license": "MIT",
   "dependencies": {
     "nid": "^0.3.2",
-    "seneca": "^0.5.19",
+    "seneca": "^0.6.1",
     "underscore": "^1.6.0"
   },
   "peerDependencies": {
